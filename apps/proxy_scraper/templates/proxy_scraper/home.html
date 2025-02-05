@@ -31,21 +31,21 @@
 
     <script>
       // Simple WebSocket connection for real-time updates
-      const socket = new WebSocket('ws://' + window.location.host + '/ws/proxies/');
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/proxies/');
 
-      socket.onmessage = function(e) {
-          const data = JSON.parse(e.data);
-          console.log('Update received: ', data);
-          // You could trigger a page refresh or update part of the DOM here.
-      };
+        socket.onopen = function(e) {
+        console.log('WebSocket connected.');
+        };
 
-      socket.onopen = function(e) {
-          console.log('WebSocket connected.');
-      };
+        socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        console.log('Update received: ', data);
+        };
 
-      socket.onclose = function(e) {
-          console.log('WebSocket disconnected.');
-      };
+        socket.onclose = function(e) {
+        console.log('WebSocket disconnected.');
+        };
+
     </script>
 </body>
 </html>

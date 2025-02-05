@@ -1,9 +1,9 @@
-# apps/proxy_scraper/tasks.py
-import logging
+# apps\proxy_scraper\tasks.py
 from celery import shared_task
 from bs4 import BeautifulSoup
 import requests
 from .models import Proxy
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -19,23 +19,29 @@ def scrape_and_save_proxies():
         return
 
     soup = BeautifulSoup(response.text, 'html.parser')
-    proxy_table = soup.find('table', class_='proxy__t')  # Adjust selector as needed
 
+    # Update this selector based on the current HTML structure of the page
+    proxy_table = soup.find('table', class_='free-proxies-table')
     if not proxy_table:
         logger.error("Could not find the proxy table on the page.")
         return
 
     new_entries = 0
+    # Skip the header row and iterate over the table rows
     for row in proxy_table.find_all('tr')[1:]:
         columns = row.find_all('td')
+        if len(columns) < 9:
+            continue  # Skip rows that don't have enough columns
         try:
             ip = columns[0].text.strip()
             port = int(columns[1].text.strip())
             country = columns[2].text.strip()
-            protocol = columns[4].text.strip()
-            uptime = columns[8].text.strip()
+            protocol = columns[3].text.strip()  # Adjust the index as needed
+            uptime = columns[8].text.strip()      # Adjust the index as needed
+
             Proxy.objects.update_or_create(
-                ip=ip, port=port,
+                ip=ip,
+                port=port,
                 defaults={'protocol': protocol, 'country': country, 'uptime': uptime}
             )
             logger.debug(f"Saved proxy: {ip}:{port} {protocol} from {country} with uptime {uptime}")

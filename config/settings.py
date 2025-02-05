@@ -1,5 +1,4 @@
 # config/settings.py
-import os
 from pathlib import Path
 from decouple import config, Csv
 
@@ -139,5 +138,13 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+    },
+}
+
+
+CELERY_BEAT_SCHEDULE = {
+    'scrape-proxies-every-30-seconds': {
+        'task': 'apps.proxy_scraper.tasks.scrape_and_save_proxies',
+        'schedule': 30.0,  # every 30 seconds
     },
 }
