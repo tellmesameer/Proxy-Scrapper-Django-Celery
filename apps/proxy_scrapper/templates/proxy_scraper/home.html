@@ -1,4 +1,4 @@
-<!-- proxy_scraper_app/templates/home.html -->
+<!-- apps/proxy_scraper/templates/proxy_scraper/home.html -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,5 +28,24 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+      // Simple WebSocket connection for real-time updates
+      const socket = new WebSocket('ws://' + window.location.host + '/ws/proxies/');
+
+      socket.onmessage = function(e) {
+          const data = JSON.parse(e.data);
+          console.log('Update received: ', data);
+          // You could trigger a page refresh or update part of the DOM here.
+      };
+
+      socket.onopen = function(e) {
+          console.log('WebSocket connected.');
+      };
+
+      socket.onclose = function(e) {
+          console.log('WebSocket disconnected.');
+      };
+    </script>
 </body>
 </html>

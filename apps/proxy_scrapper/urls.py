@@ -1,4 +1,4 @@
-# proxy_scraper_app/urls.py
+# apps/proxy_scraper/urls.py
 from django.urls import path
 from .views import home
 
