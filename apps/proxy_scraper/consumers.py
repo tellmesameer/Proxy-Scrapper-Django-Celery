@@ -11,5 +11,5 @@ class ProxyConsumer(AsyncWebsocketConsumer):
         pass
 
     async def receive(self, text_data):
-        # For now, we simply echo back the message.
+        # For now, simply echo back the received message.
         await self.send(text_data=json.dumps({'message': text_data}))

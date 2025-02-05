@@ -15,11 +15,17 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Copy the project
+# Copy the project files
 COPY . /app/
 
+# Copy the .env file (make sure it exists at the root)
+COPY .env /app/
+
+# **Create the logs directory before collectstatic**
+RUN mkdir -p logs
+
 # Collect static files
-RUN python config/manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Expose port (Gunicorn will serve on 8000)
 EXPOSE 8000
