@@ -1,0 +1,32 @@
+<!-- proxy_scraper_app/templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Proxy List</title>
+</head>
+<body>
+    <h2>Proxy List</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>IP</th>
+                <th>Port</th>
+                <th>Protocol</th>
+                <th>Country</th>
+                <th>Uptime</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proxy in proxies %}
+            <tr>
+                <td>{{ proxy.ip }}</td>
+                <td>{{ proxy.port }}</td>
+                <td>{{ proxy.protocol }}</td>
+                <td>{{ proxy.country }}</td>
+                <td>{{ proxy.uptime }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
